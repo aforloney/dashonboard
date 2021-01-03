@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Dashonboard.Data.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace dashonboard.Controllers
@@ -15,8 +16,10 @@ namespace dashonboard.Controllers
         }
 
         [HttpGet]
-        public IActionResult Analyze()
+        public IActionResult Analyze(DashonboardRequest request)
         {
+            _logger.LogInformation($"Anaylzing specified request. {request}");
+            _logger.LogInformation($"Anaylsis completed.");
             return Ok("Done!");
         }
     }
