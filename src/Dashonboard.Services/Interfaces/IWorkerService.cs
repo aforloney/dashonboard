@@ -4,6 +4,10 @@ namespace Dashonboard.Services.Interfaces
 {
     public interface IWorkerService
     {
-        Task RunAsync();
+        /// <summary>
+        /// Defines how the necessary run should go
+        /// </summary>
+        /// <returns>Flag to indicate whether the run was successful or not</returns>
+        Task<bool> RunAsync();
     }
 }

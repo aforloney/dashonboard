@@ -16,7 +16,7 @@ namespace Dashonboard.Services
             _dashboardService = dashboardService;
         }
 
-        public async Task RunAsync()
+        public async Task<bool> RunAsync()
         {
             var dashboard = await _dashboardService.GetAsync();
             var panelData = await _dashboardService.GetInternalJsonAsync(dashboard);
@@ -25,8 +25,11 @@ namespace Dashonboard.Services
             {
                 var newPanelData = new DashboardData();
                 var finalResults = _dashboardService.Merge(panelData, newPanelData);
-                await _dashboardService.CreateAsync(finalResults);
+                var success = await _dashboardService.CreateAsync(finalResults);
+                if (!success)
+                    return false;
             }
+            return true;
         }
     }
 }
