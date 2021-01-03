@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace dashonboard.Controllers
+namespace Dashonboard.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DashboardController : ControllerBase
+    public class DashonboardController : ControllerBase
     {
-        private readonly ILogger<DashboardController> _logger;
+        private readonly ILogger<DashonboardController> _logger;
 
-        public DashboardController(ILogger<DashboardController> logger)
+        public DashonboardController(ILogger<DashonboardController> logger)
         {
             _logger = logger;
         }
