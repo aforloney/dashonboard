@@ -25,13 +25,20 @@ namespace Dashonboard.Controllers
         public async Task<IActionResult> Analyze(DashonboardRequest request)
         {
             _logger.LogInformation($"Anaylzing specified request. {request}");
-            var successful = await _workerService.RunAsync();
+            var successful = await _workerService.RunAsync(request.Organization, request.RepositoryName, request.CommitHash);
             _logger.LogInformation($"Work completed.");
             if (successful)
             {
                 return Ok("Done!");
             }
             return new StatusCodeResult((int)HttpStatusCode.InternalServerError);
+        }
+
+        [HttpGet]
+        [Route("/debug")]
+        public async Task<IActionResult> Debug(string org, string repo, string commitHash)
+        {
+            return Ok(await _workerService.DebugAsync(org, repo, commitHash));
         }
     }
 }

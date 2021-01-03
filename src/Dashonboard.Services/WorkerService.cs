@@ -1,5 +1,6 @@
 ﻿using Dashonboard.Data.Models;
 using Dashonboard.Services.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Dashonboard.Services
@@ -16,11 +17,11 @@ namespace Dashonboard.Services
             _dashboardService = dashboardService;
         }
 
-        public async Task<bool> RunAsync()
+        public async Task<bool> RunAsync(string organization, string repository, string commitHash)
         {
             var dashboard = await _dashboardService.GetAsync();
             var panelData = await _dashboardService.GetInternalJsonAsync(dashboard);
-            var results = await _analyzerService.PerformAnalysisAsync();
+            var results = await _analyzerService.PerformAnalysisAsync(organization, repository, commitHash);
             foreach (var result in results)
             {
                 var newPanelData = new DashboardData();
@@ -30,6 +31,11 @@ namespace Dashonboard.Services
                     return false;
             }
             return true;
+        }
+
+        public async Task<IList<AnalysisResult>> DebugAsync(string organization, string repository, string commitHash)
+        {
+            return await _analyzerService.PerformAnalysisAsync(organization, repository, commitHash);
         }
     }
 }
