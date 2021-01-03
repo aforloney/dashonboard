@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace Dashonboard
 {
@@ -26,8 +27,14 @@ namespace Dashonboard
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "dashonboard", Version = "v1" });
             });
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLower();
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false)
+                .AddJsonFile($"appsettings.{environment}.json", optional: false)
+                .AddEnvironmentVariables()
+                .Build();
 
-            services.RegisterServices();
+            services.RegisterServices(config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
