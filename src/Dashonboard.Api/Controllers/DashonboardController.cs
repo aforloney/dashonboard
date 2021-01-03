@@ -2,6 +2,7 @@
 using Dashonboard.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Dashonboard.Controllers
@@ -11,22 +12,26 @@ namespace Dashonboard.Controllers
     public class DashonboardController : ControllerBase
     {
         private readonly ILogger<DashonboardController> _logger;
-        private readonly IAnalyzerService _analyzerService;
+        private readonly IWorkerService _workerService;
 
         public DashonboardController(ILogger<DashonboardController> logger,
-            IAnalyzerService analyzerService)
+            IWorkerService workerService)
         {
             _logger = logger;
-            _analyzerService = analyzerService;
+            _workerService = workerService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Analyze(DashonboardRequest request)
         {
             _logger.LogInformation($"Anaylzing specified request. {request}");
-            var results = await _analyzerService.PerformAnalysisAsync();
+            var successful = await _workerService.RunAsync();
             _logger.LogInformation($"Work completed.");
-            return Ok("Done!");
+            if (successful)
+            {
+                return Ok("Done!");
+            }
+            return new StatusCodeResult((int)HttpStatusCode.InternalServerError);
         }
     }
 }
