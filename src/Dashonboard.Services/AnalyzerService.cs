@@ -37,6 +37,9 @@ namespace Dashonboard.Services
             var github = new GitHubClient(new ProductHeaderValue("Dashonboard"));
             github.Credentials = new Credentials(_options.Value.Username, _options.Value.Password);
             var results = await github.Repository.Commit.Get(organization, repository, commitHash);
+
+            MockedTimer.Timer("Total Time");
+
             foreach (var result in results.Files)
             {
                 var patch = GetQualifiedPatch(result.Patch);
@@ -84,6 +87,13 @@ namespace Dashonboard.Services
         private IList<LineDiff> FilterTimers(ICollection<LineDiff> diff)
         {
             return diff.Where(chg => _timingRegEx.Match(chg.Content).Success).ToList();
+        }
+    }
+
+    static class MockedTimer
+    {
+        public static void Timer(string measurement)
+        {
         }
     }
 }
