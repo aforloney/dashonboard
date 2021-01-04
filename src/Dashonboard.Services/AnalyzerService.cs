@@ -52,8 +52,8 @@ namespace Dashonboard.Services
                     if (additions.Any())
                         analysis.AddRange(additions.Select(adds => new AnalysisResult
                         {
-                            Action = ActionType.Create,
-                            Metric = MetricType.Timing,
+                            ActionType = "CREATE",
+                            MetricType = "Timer",
                             MetricName = _timingRegEx.Match(adds.Content).Groups[1].Value,
                         }));
 
@@ -62,8 +62,8 @@ namespace Dashonboard.Services
                     if (deletions.Any())
                         analysis.AddRange(deletions.Select(adds => new AnalysisResult
                         {
-                            Action = ActionType.Remove,
-                            Metric = MetricType.Timing,
+                            ActionType = "DELETE",
+                            MetricType = "Timer",
                             MetricName = _timingRegEx.Match(adds.Content).Groups[1].Value,
                         }));
                 }

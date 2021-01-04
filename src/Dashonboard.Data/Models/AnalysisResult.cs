@@ -2,20 +2,8 @@
 {
     public class AnalysisResult
     {
-        public ActionType Action { get; set; }
-        public MetricType Metric { get; set; }
+        public string ActionType { get; set; }
+        public string MetricType { get; set; }
         public string MetricName { get; set; }
-    }
-
-    public enum ActionType
-    {
-        Create,
-        Remove
-    }
-
-    public enum MetricType
-    {
-        Timing,
-        Datapoints
     }
 }
