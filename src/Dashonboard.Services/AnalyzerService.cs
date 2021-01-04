@@ -87,11 +87,4 @@ namespace Dashonboard.Services
             return diff.Where(chg => _timingRegEx.Match(chg.Content).Success).ToList();
         }
     }
-
-    static class MockedTimer
-    {
-        public static void Timer(string measurement)
-        {
-        }
-    }
 }
