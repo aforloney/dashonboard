@@ -48,7 +48,7 @@ namespace Dashonboard.Services
                 foreach (var diff in diffs.SelectMany(f => f.Chunks))
                 {
                     // with the lines that have been added, check for metrics
-                    var additions = FilterTimers(diff.Changes).Where(chg => chg.Add == true).ToList();
+                    var additions = FilterTimers(diff.Changes.Where(chg => chg.Add == true)).ToList();
                     if (additions.Any())
                         analysis.AddRange(additions.Select(adds => new AnalysisResult
                         {
@@ -58,7 +58,7 @@ namespace Dashonboard.Services
                         }));
 
                     // with the lines that have been deleted, check for metrics to remove
-                    var deletions = FilterTimers(diff.Changes).Where(chg => chg.Delete == true).ToList();
+                    var deletions = FilterTimers(diff.Changes.Where(chg => chg.Delete == true)).ToList();
                     if (deletions.Any())
                         analysis.AddRange(deletions.Select(adds => new AnalysisResult
                         {
@@ -82,7 +82,7 @@ namespace Dashonboard.Services
             return $"diff --git{Environment.NewLine}{patch}";
         }
 
-        private IList<LineDiff> FilterTimers(ICollection<LineDiff> diff)
+        private IList<LineDiff> FilterTimers(IEnumerable<LineDiff> diff)
         {
             return diff.Where(chg => _timingRegEx.Match(chg.Content).Success).ToList();
         }
