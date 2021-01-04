@@ -38,8 +38,6 @@ namespace Dashonboard.Services
             github.Credentials = new Credentials(_options.Value.Username, _options.Value.Password);
             var results = await github.Repository.Commit.Get(organization, repository, commitHash);
 
-            MockedTimer.Timer("Total Time");
-
             foreach (var result in results.Files)
             {
                 var patch = GetQualifiedPatch(result.Patch);
