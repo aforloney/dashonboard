@@ -37,6 +37,7 @@ namespace Dashonboard.Services
             var github = new GitHubClient(new ProductHeaderValue("Dashonboard"));
             github.Credentials = new Credentials(_options.Value.Username, _options.Value.Password);
             var results = await github.Repository.Commit.Get(organization, repository, commitHash);
+
             foreach (var result in results.Files)
             {
                 var patch = GetQualifiedPatch(result.Patch);
@@ -51,8 +52,8 @@ namespace Dashonboard.Services
                     if (additions.Any())
                         analysis.AddRange(additions.Select(adds => new AnalysisResult
                         {
-                            Action = ActionType.Create,
-                            Metric = MetricType.Timing,
+                            ActionType = "CREATE",
+                            MetricType = "Timer",
                             MetricName = _timingRegEx.Match(adds.Content).Groups[1].Value,
                         }));
 
@@ -61,8 +62,8 @@ namespace Dashonboard.Services
                     if (deletions.Any())
                         analysis.AddRange(deletions.Select(adds => new AnalysisResult
                         {
-                            Action = ActionType.Remove,
-                            Metric = MetricType.Timing,
+                            ActionType = "DELETE",
+                            MetricType = "Timer",
                             MetricName = _timingRegEx.Match(adds.Content).Groups[1].Value,
                         }));
                 }
