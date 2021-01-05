@@ -1,4 +1,5 @@
 ﻿using Dashonboard.Data.Models;
+using Dashonboard.Services.Extenstions;
 using Dashonboard.Services.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -48,7 +49,7 @@ namespace Dashonboard.Services
                 foreach (var diff in diffs.SelectMany(f => f.Chunks))
                 {
                     // with the lines that have been added, check for metrics
-                    var additions = FilterTimers(diff.Changes.Where(chg => chg.Add == true));
+                    var additions = FilterTimers(diff.Changes.GetAdds());
                     if (additions.Any())
                         analysis.AddRange(additions.Select(adds => new AnalysisResult
                         {
@@ -58,7 +59,7 @@ namespace Dashonboard.Services
                         }));
 
                     // with the lines that have been deleted, check for metrics to remove
-                    var deletions = FilterTimers(diff.Changes.Where(chg => chg.Delete == true));
+                    var deletions = FilterTimers(diff.Changes.GetDeletes());
                     if (deletions.Any())
                         analysis.AddRange(deletions.Select(adds => new AnalysisResult
                         {
